@@ -24,3 +24,34 @@ def infolist(request):
     info=personalinfo.objects.all()
     serializer= personalinfoSerializer(info,many=True)
     return Response(serializer.data)
+
+
+@api_view(['GET'])
+def infolistdetail(request,pk):
+    info=personalinfo.objects.get(id=pk)
+    serializer= personalinfoSerializer(info,many=False)
+    return Response(serializer.data)
+
+
+@api_view(['POST'])
+def infolistcreate(request):
+    serializer= personalinfoSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+    return Response(serializer.data)
+
+
+@api_view(['POST'])
+def infolistupdate(request,pk):
+    info=personalinfo.objects.get(id=pk)
+    serializer= personalinfoSerializer(instance=info, data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+    return Response(serializer.data)
+
+
+@api_view(['DELETE'])
+def infolistdelete(request,pk):
+    info=personalinfo.objects.get(id=pk)
+    info.delete()
+    return Response('Its sucessfully deleted')
